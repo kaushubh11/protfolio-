@@ -1,0 +1,93 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-black text-white font-inter overflow-x-hidden antialiased;
+    scroll-behavior: smooth;
+  }
+}
+
+@layer utilities {
+  .neon-text-aqua {
+    text-shadow: 0 0 5px #00ffff, 0 0 10px #00ffff, 0 0 15px #ff00ff;
+  }
+  .neon-text-purple {
+    text-shadow: 0 0 5px #ff00ff, 0 0 10px #ff00ff, 0 0 15px #00ffff;
+  }
+  .neon-glow-purple {
+    box-shadow: 0 0 10px #ff00ff, 0 0 20px #00ffff;
+  }
+  .neon-glow-aqua-sm {
+    box-shadow: 0 0 3px #00ffff;
+  }
+}
+
+/* Custom Animations */
+.hero-blob-container {
+  --mouse-x: 50%;
+  --mouse-y: 50%;
+}
+
+.hero-blob {
+  --size: 450px;
+  position: absolute;
+  width: var(--size);
+  height: var(--size);
+  top: 50%;
+  left: 50%;
+  transform: translate(calc(var(--mouse-x, 50%) - 50%), calc(var(--mouse-y, 50%) - 50%));
+  filter: blur(100px); 
+  opacity: 0.3;
+  transition: transform 0.15s ease-out;
+  will-change: transform;
+}
+
+.key-press {
+  animation: keyFlash 0.5s infinite alternate;
+}
+
+@keyframes keyFlash {
+  from { opacity: 1; }
+  to { opacity: 0.2; }
+}
+
+.rocket-takeoff {
+  transform: scale(20) translate(20px, -20px) !important; 
+  opacity: 0;
+  transition: transform 0.5s ease-in, opacity 0.5s ease-in;
+}
+
+.rocket-landing {
+  transform: translateY(-500px) scale(0.8) rotate(-15deg); 
+  opacity: 0;
+  transition: transform 0.8s ease-out, opacity 0.8s ease-out;
+}
+
+.typing-cursor {
+  display: inline-block;
+  opacity: 0; 
+  transition: opacity 0.1s;
+  margin-left: 0.25rem; 
+  font-weight: 300;
+}
+
+.typing-cursor.visible {
+  opacity: 1;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #0f0f0f; 
+}
+::-webkit-scrollbar-thumb {
+  background: #333; 
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #00ffff; 
+}
