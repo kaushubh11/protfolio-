@@ -4,7 +4,7 @@ import { Mail, Send, Loader2, MapPin, Phone, Github, Linkedin, CheckCircle2, Ale
 
 const Contact = () => {
     const [status, setStatus] = useState('idle');
-    const [status, setStatus] = useState('idle');
+
     const [formValues, setFormValues] = useState({ name: '', email: '', message: '' });
 
     const handleChange = (e) => {
