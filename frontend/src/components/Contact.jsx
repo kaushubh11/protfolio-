@@ -4,7 +4,7 @@ import { Mail, Send, Loader2, MapPin, Phone, Github, Linkedin, CheckCircle2, Ale
 
 const Contact = () => {
     const [status, setStatus] = useState('idle');
-    const [focusedField, setFocusedField] = useState(null);
+    const [status, setStatus] = useState('idle');
     const [formValues, setFormValues] = useState({ name: '', email: '', message: '' });
 
     const handleChange = (e) => {
@@ -41,16 +41,10 @@ const Contact = () => {
         }
     };
 
-    const inputClasses = (fieldName) => `
-        w-full bg-zinc-900/50 border rounded-xl px-5 py-4 text-white placeholder-transparent 
-        focus:outline-none transition-all duration-300
-        ${focusedField === fieldName ? 'border-primary ring-1 ring-primary/50 shadow-[0_0_15px_rgba(59,130,246,0.2)]' : 'border-zinc-800 hover:border-zinc-700'}
-    `;
+    // CSS-only floating label logic reduces complexity
+    const inputClasses = "w-full bg-zinc-900/50 border border-zinc-800 rounded-xl px-5 py-4 text-white placeholder-transparent focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50 focus:shadow-[0_0_15px_rgba(59,130,246,0.2)] transition-all duration-300 peer";
 
-    const labelClasses = (fieldName, value) => `
-        absolute left-5 transition-all duration-300 text-zinc-500 pointer-events-none
-        ${focusedField === fieldName || value ? '-top-2.5 text-xs bg-background px-2 text-primary' : 'top-4 text-base'}
-    `;
+    const labelClasses = "absolute left-5 top-4 text-zinc-500 text-base transition-all duration-300 pointer-events-none peer-focus:-top-2.5 peer-focus:text-xs peer-focus:text-primary peer-focus:bg-background peer-focus:px-2 peer-[:not(:placeholder-shown)]:-top-2.5 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-primary peer-[:not(:placeholder-shown)]:bg-background peer-[:not(:placeholder-shown)]:px-2";
 
     return (
         <section className="py-32 px-4 bg-background relative" id="contact">
@@ -117,13 +111,12 @@ const Contact = () => {
                                 name="name"
                                 id="name"
                                 value={formValues.name}
-                                required
-                                onFocus={() => setFocusedField('name')}
-                                onBlur={() => setFocusedField(null)}
                                 onChange={handleChange}
-                                className={inputClasses('name')}
+                                placeholder="Name"
+                                required
+                                className={inputClasses}
                             />
-                            <label htmlFor="name" className={labelClasses('name', formValues.name)}>
+                            <label htmlFor="name" className={labelClasses}>
                                 Your Name
                             </label>
                         </div>
@@ -134,13 +127,12 @@ const Contact = () => {
                                 name="email"
                                 id="email"
                                 value={formValues.email}
-                                required
-                                onFocus={() => setFocusedField('email')}
-                                onBlur={() => setFocusedField(null)}
                                 onChange={handleChange}
-                                className={inputClasses('email')}
+                                placeholder="Email"
+                                required
+                                className={inputClasses}
                             />
-                            <label htmlFor="email" className={labelClasses('email', formValues.email)}>
+                            <label htmlFor="email" className={labelClasses}>
                                 Email Address
                             </label>
                         </div>
@@ -151,13 +143,12 @@ const Contact = () => {
                                 id="message"
                                 rows="5"
                                 value={formValues.message}
-                                required
-                                onFocus={() => setFocusedField('message')}
-                                onBlur={() => setFocusedField(null)}
                                 onChange={handleChange}
-                                className={inputClasses('message')}
+                                placeholder="Message"
+                                required
+                                className={inputClasses}
                             ></textarea>
-                            <label htmlFor="message" className={labelClasses('message', formValues.message)}>
+                            <label htmlFor="message" className={labelClasses}>
                                 Write your message...
                             </label>
                         </div>
