@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { Home, User, Code, Mail, Cpu } from 'lucide-react';
+import { Home, User, Code, Mail, Cpu, GraduationCap } from 'lucide-react';
 
 const NavDock = ({ scrollY }) => {
     const sections = [
         { name: 'Home', id: 'hero', icon: Home },
+        { name: 'About', id: 'about', icon: User },
         { name: 'Skills', id: 'skills', icon: Cpu },
+        { name: 'Education', id: 'education', icon: GraduationCap },
         { name: 'Projects', id: 'projects', icon: Code },
         { name: 'Contact', id: 'contact', icon: Mail },
     ];

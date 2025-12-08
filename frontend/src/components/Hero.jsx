@@ -1,22 +1,12 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, Github, Linkedin, Mail } from 'lucide-react';
-import ThreeDBg from './ThreeDBg';
 
 const Hero = () => {
     return (
-        <div id="hero" className="min-h-screen w-full flex flex-col items-center justify-center relative overflow-hidden bg-background">
-            {/* 3D Background */}
-            <ThreeDBg animationState="idle" />
-
-            {/* Background Grid - Reduced Opacity for better visibility of 3D bg */}
-            <div className="absolute inset-0 bg-grid-white/[0.01] bg-[size:50px_50px] pointer-events-none z-0" />
-
-            {/* Radial Gradient Overlay to fade grid edges */}
-            <div className="absolute inset-0 bg-background/80 [mask-image:radial-gradient(ellipse_at_center,transparent_0%,black)] pointer-events-none z-0" />
-
-            {/* Spotlight Effect */}
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[500px] bg-primary/20 blur-[120px] rounded-full opacity-30 animate-spotlight pointer-events-none z-0" />
+        <div id="hero" className="min-h-screen w-full flex flex-col items-center justify-center relative overflow-hidden">
+            {/* Spotlight Effect - Kept as local highlight */}
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[500px] bg-primary/20 blur-[120px] rounded-full opacity-30 animate-spotlight pointer-events-none z-0 gpu-accelerated" />
 
             <div className="relative z-10 max-w-5xl mx-auto px-4 text-center">
                 <motion.div

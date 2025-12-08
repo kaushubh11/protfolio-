@@ -21,14 +21,18 @@ const ThreeDBg = React.memo(({ animationState }) => {
         const camera = new THREE.PerspectiveCamera(75, mount.clientWidth / mount.clientHeight, 0.1, 1000);
         camera.position.z = 20;
 
-        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        const renderer = new THREE.WebGLRenderer({
+            antialias: true,
+            alpha: true,
+            powerPreference: "high-performance"
+        });
         renderer.setSize(mount.clientWidth, mount.clientHeight);
-        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // Clamp pixel ratio for performance
         mount.appendChild(renderer.domElement);
         rendererRef.current = renderer;
 
         // --- PARTICLE SYSTEM ---
-        const particleCount = 700;
+        const particleCount = 400; // Optimized count
         const geometry = new THREE.BufferGeometry();
         const positions = new Float32Array(particleCount * 3);
         const colors = new Float32Array(particleCount * 3);
@@ -52,7 +56,7 @@ const ThreeDBg = React.memo(({ animationState }) => {
         geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
 
         const material = new THREE.PointsMaterial({
-            size: 0.2,
+            size: 0.3, // Slightly larger particles
             vertexColors: true,
             blending: THREE.AdditiveBlending,
             transparent: true,
