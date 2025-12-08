@@ -23,11 +23,11 @@ function App() {
   return (
     <main className="bg-background min-h-screen text-white selection:bg-purple-500/30 relative">
       {/* Global Background Layer */}
+      {/* Global Background Layer */}
       <div className="fixed inset-0 z-0 pointer-events-none">
         <ThreeDBg animationState="idle" />
         <div className="absolute inset-0 bg-grid-white/[0.01] bg-[size:50px_50px]" />
         <div className="absolute inset-0 bg-background/80 [mask-image:radial-gradient(ellipse_at_center,transparent_0%,black)]" />
-        {/* Scanning Line Effect */}
         <div className="scanline"></div>
       </div>
 

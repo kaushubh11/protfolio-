@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, Github, Linkedin, Mail } from 'lucide-react';
+import InteractiveText from './InteractiveText';
 
 const Hero = () => {
     return (
@@ -35,9 +36,9 @@ const Hero = () => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: 0.2 }}
-                    className="text-xl text-zinc-400 max-w-2xl mx-auto mb-10 leading-relaxed"
+                    className="text-xl text-zinc-400 max-w-2xl mx-auto mb-10 leading-relaxed flex items-center justify-center gap-2"
                 >
-                    I'm Kaushubh. A full-stack engineer and interface designer.
+                    I'm <InteractiveText text="Kaushubh Chaudhary" className="text-zinc-200 text-2xl" />. A full-stack engineer and interface designer.
                     I build accessible, pixel-perfect, and performant web applications.
                 </motion.p>
 

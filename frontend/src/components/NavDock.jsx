@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from 'react';
 import { Home, User, Code, Mail, Cpu, GraduationCap } from 'lucide-react';
 
 const NavDock = ({ scrollY }) => {
