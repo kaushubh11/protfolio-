@@ -5,7 +5,7 @@ import ThreeDBg from './ThreeDBg';
 
 const Hero = () => {
     return (
-        <div className="min-h-screen w-full flex flex-col items-center justify-center relative overflow-hidden bg-background">
+        <div id="hero" className="min-h-screen w-full flex flex-col items-center justify-center relative overflow-hidden bg-background">
             {/* 3D Background */}
             <ThreeDBg animationState="idle" />
 

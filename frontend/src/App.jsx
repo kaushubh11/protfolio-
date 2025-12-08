@@ -1,14 +1,27 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Hero from './components/Hero';
 import Projects from './components/Projects';
 import Contact from './components/Contact';
-// We might keep other components or phase them out for consistency
-// For the renovation, we focus on the core high-impact sections first.
+import Skills from './components/Skills';
+import NavDock from './components/NavDock';
 
 function App() {
+  const [scrollY, setScrollY] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrollY(window.scrollY);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
     <main className="bg-background min-h-screen text-white selection:bg-purple-500/30">
+      <NavDock scrollY={scrollY} />
       <Hero />
+      <Skills />
       <Projects />
       <Contact />
 
