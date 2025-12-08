@@ -7,19 +7,31 @@ export default {
     theme: {
         extend: {
             colors: {
-                'void-black': '#000000',
-                'neon-aqua': '#00ffff',
-                'neon-purple': '#ff00ff',
+                background: '#030303', // Almost absolute black
+                surface: '#0a0a0a',     // Dark gray surface
+                border: '#1f1f1f',      // Subtle border
+                primary: '#3b82f6',     // Professional Blue
+                secondary: '#a855f7',   // Professional Purple
             },
             fontFamily: {
-                orbitron: ['Orbitron', 'sans-serif'],
-                inter: ['Inter', 'sans-serif'],
+                sans: ['Inter', 'system-ui', 'sans-serif'], // Clean sans
+                mono: ['JetBrains Mono', 'monospace'],
             },
-            boxShadow: {
-                'neon': '0 0 5px var(--tw-shadow-color)',
-                'neon-lg': '0 0 20px var(--tw-shadow-color)',
-                'neon-sm': '0 0 3px var(--tw-shadow-color)',
-            }
+            animation: {
+                'spotlight': 'spotlight 2s ease .75s 1 forwards',
+            },
+            keyframes: {
+                spotlight: {
+                    '0%': {
+                        opacity: 0,
+                        transform: 'translate(-72%, -62%) scale(0.5)',
+                    },
+                    '100%': {
+                        opacity: 1,
+                        transform: 'translate(-50%,-40%) scale(1)',
+                    },
+                },
+            },
         },
     },
     plugins: [],

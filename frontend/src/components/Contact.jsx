@@ -1,106 +1,100 @@
 import React, { useState } from 'react';
-import { Mail, User, Code } from 'lucide-react';
-import { DATA } from '../data';
-import SectionContainer from './SectionContainer';
+import { Mail, Send, Loader2 } from 'lucide-react';
 
 const Contact = () => {
-    const [formData, setFormData] = useState({ name: '', email: '', message: '' });
-    const [status, setStatus] = useState('');
+    const [status, setStatus] = useState('idle');
 
-    const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
-        setStatus('');
-    };
-
-    const handleContactSubmit = async (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         setStatus('loading');
 
-        // --- MOCK ASYNCHRONOUS BEHAVIOR ---
-        await new Promise(resolve => setTimeout(resolve, 1500));
-        // --- END MOCK ---
+        const formData = new FormData(e.target);
+        const data = {
+            name: formData.get('name'),
+            email: formData.get('email'),
+            message: formData.get('message')
+        };
 
-        console.log("Contact form submitted (MOCK):", formData);
+        try {
+            const response = await fetch('http://localhost:5000/api/contact', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            });
 
-        if (formData.email.includes("@")) {
-            setStatus('success');
-            setFormData({ name: '', email: '', message: '' });
-        } else {
+            if (response.ok) {
+                setStatus('success');
+                e.target.reset();
+            } else {
+                setStatus('error');
+            }
+        } catch (error) {
+            console.error('Error submitting form:', error);
             setStatus('error');
         }
     };
 
-    const contactFields = [
-        { name: 'Email', value: DATA.PERSONAL.EMAIL, icon: Mail },
-        { name: 'LinkedIn', value: DATA.PERSONAL.LINKEDIN, icon: User },
-        { name: 'GitHub', value: DATA.PERSONAL.GITHUB, icon: Code },
-    ];
-
     return (
-        <SectionContainer id="contact" title="Connect Protocol" icon={Mail}>
-            <div className="p-8 bg-zinc-900/70 rounded-xl shadow-lg shadow-purple-500/10 border border-neon-purple/20 w-full max-w-2xl mx-auto font-inter">
-                <p className="text-gray-300 mb-6 text-lg text-center">
-                    Engage the communication link below for collaboration or inquiries.
+        <section className="py-32 px-4 border-t border-zinc-900 bg-background" id="contact">
+            <div className="max-w-2xl mx-auto text-center">
+                <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">Let's build something together.</h2>
+                <p className="text-zinc-400 mb-12">
+                    I'm currently available for freelance work and internships.
+                    Drop me a line if you'd like to chat about a project or just say hi.
                 </p>
 
-                <div className="grid grid-cols-3 gap-4 mb-8">
-                    {contactFields.map((field) => {
-                        const Icon = field.icon;
-                        return (
-                            <div key={field.name} className="text-center p-3 bg-zinc-800/70 rounded-lg hover:bg-zinc-700/70 transition">
-                                <Icon size={20} className="text-neon-aqua mx-auto mb-1 neon-text-aqua" />
-                                <a
-                                    href={field.name === 'Email' ? `mailto:${field.value}` : field.value}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="text-sm text-purple-400 hover:text-neon-purple break-words"
-                                >
-                                    {field.name}
-                                </a>
-                            </div>
-                        );
-                    })}
-                </div>
-
-                <form onSubmit={handleContactSubmit} className="space-y-4 pt-4 border-t border-neon-aqua/30">
-                    {/* Form Inputs */}
-                    <input type="text" name="name" placeholder="IDENTITY" value={formData.name} onChange={handleChange} required className="input-field" />
-                    <input type="email" name="email" placeholder="FREQUENCY (EMAIL)" value={formData.email} onChange={handleChange} required className="input-field" />
-                    <textarea name="message" rows="4" placeholder="DATA PACKET" value={formData.message} onChange={handleChange} required className="input-field"></textarea>
+                <form onSubmit={handleSubmit} className="text-left space-y-4 bg-zinc-900/50 p-8 rounded-3xl border border-zinc-800">
+                    <div>
+                        <label className="block text-sm font-medium text-zinc-400 mb-2">Name</label>
+                        <input
+                            type="text"
+                            name="name"
+                            required
+                            className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all placeholder:text-zinc-600"
+                            placeholder="John Doe"
+                        />
+                    </div>
+                    <div>
+                        <label className="block text-sm font-medium text-zinc-400 mb-2">Email</label>
+                        <input
+                            type="email"
+                            name="email"
+                            required
+                            className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all placeholder:text-zinc-600"
+                            placeholder="john@example.com"
+                        />
+                    </div>
+                    <div>
+                        <label className="block text-sm font-medium text-zinc-400 mb-2">Message</label>
+                        <textarea
+                            name="message"
+                            rows="4"
+                            required
+                            className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all placeholder:text-zinc-600"
+                            placeholder="Tell me about your project..."
+                        ></textarea>
+                    </div>
 
                     <button
                         type="submit"
-                        disabled={status === 'loading'}
-                        className="w-full px-4 py-3 text-lg font-medium text-black bg-neon-purple rounded-lg shadow-neon shadow-purple-500/50 hover:bg-purple-400 transition duration-300 disabled:opacity-50 flex items-center justify-center font-orbitron"
+                        disabled={status === 'loading' || status === 'success'}
+                        className="w-full bg-primary hover:bg-blue-600 text-white font-semibold py-4 rounded-xl transition-all flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
                     >
                         {status === 'loading' ? (
-                            <>
-                                <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-black" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                </svg>
-                                Sending Transmission...
-                            </>
+                            <><Loader2 className="animate-spin w-5 h-5" /> Sending...</>
+                        ) : status === 'success' ? (
+                            "Message Sent!"
+                        ) : status === 'error' ? (
+                            "Failed - Try Again"
                         ) : (
-                            <>
-                                <Mail size={20} className="mr-2" /> Initiate Connection
-                            </>
+                            <><Send className="w-4 h-4" /> Send Message</>
                         )}
                     </button>
-
-                    {status === 'success' && (
-                        <p className="mt-4 text-neon-aqua font-semibold text-center font-orbitron">
-                            SUCCESS: Message delivered to Nexus Core.
-                        </p>
-                    )}
-                    {status === 'error' && (
-                        <p className="mt-4 text-neon-purple font-semibold text-center font-orbitron">
-                            ERROR: Connection failure. Check console or verify email placeholder.
-                        </p>
-                    )}
                 </form>
             </div>
-        </SectionContainer>
+        </section>
     );
 };
 

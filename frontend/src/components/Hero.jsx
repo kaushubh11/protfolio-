@@ -1,81 +1,78 @@
-import React, { useRef, useState } from 'react';
-import { Rocket } from 'lucide-react';
-import { DATA } from '../data';
+import React from 'react';
+import { motion } from 'framer-motion';
+import { ArrowRight, Github, Linkedin, Mail } from 'lucide-react';
 import ThreeDBg from './ThreeDBg';
-import CyberStickman from './CyberStickman';
-import TypingText from './TypingText';
 
-const Hero = ({ animationState }) => {
-    const heroRef = useRef(null);
-    const [coords, setCoords] = useState({ x: 0, y: 0 });
-
-    const isAnimated = animationState !== 'idle';
-    const tagline = DATA.PERSONAL.TITLE;
-
-    const handleMouseMove = (e) => {
-        const heroElement = heroRef.current;
-        if (!heroElement || isAnimated) return;
-
-        const centerX = heroElement.offsetWidth / 2;
-        const centerY = heroElement.offsetHeight / 2;
-        const moveX = (e.clientX - heroElement.getBoundingClientRect().left - centerX) / 35;
-        const moveY = (e.clientY - heroElement.getBoundingClientRect().top - centerY) / 35;
-        setCoords({ x: moveX, y: moveY });
-
-        const blobX = e.clientX - heroElement.getBoundingClientRect().left;
-        const blobY = e.clientY - heroElement.getBoundingClientRect().top;
-
-        heroElement.style.setProperty('--mouse-x', `${blobX}px`);
-        heroElement.style.setProperty('--mouse-y', `${blobY}px`);
-    };
-
-    const rocketClass =
-        animationState === 'takeoff' ? 'rocket-takeoff' :
-            animationState === 'landing' ? 'rocket-landing' :
-                '';
-
-    const rocketStyle = {
-        transform: animationState === 'idle' ? `translate(${coords.x}px, ${coords.y}px) rotate(-15deg)` : undefined,
-        transition: 'transform 0.1s ease-out',
-    };
-
+const Hero = () => {
     return (
-        <div
-            id="hero"
-            ref={heroRef}
-            className="min-h-screen relative flex flex-col items-center justify-center text-center p-6 transition-all duration-500 ease-in-out overflow-hidden hero-blob-container"
-            onMouseMove={handleMouseMove}
-        >
-            <ThreeDBg animationState={animationState} />
-            <CyberStickman />
+        <div className="min-h-screen w-full flex flex-col items-center justify-center relative overflow-hidden bg-background">
+            {/* 3D Background */}
+            <ThreeDBg animationState="idle" />
 
-            {/* Dynamic Background Blob Element (Neon Aqua) */}
-            <div className="absolute top-0 left-0 w-full h-full pointer-events-none z-10">
-                <div className="hero-blob" style={{ background: 'radial-gradient(circle at center, rgba(0, 255, 255, 0.4) 0%, rgba(0, 0, 0, 0) 70%)' }} />
-            </div>
+            {/* Background Grid - Reduced Opacity for better visibility of 3D bg */}
+            <div className="absolute inset-0 bg-grid-white/[0.01] bg-[size:50px_50px] pointer-events-none z-0" />
 
-            {/* Content */}
-            <div className="z-20 flex flex-col items-center max-w-2xl mx-auto">
-                <Rocket
-                    size={80}
-                    className={`text-neon-purple mb-6 transition-all duration-300 transform ${rocketClass} neon-text-purple`}
-                    style={rocketStyle}
-                />
-                <p className="text-xl text-purple-400 mb-3 font-orbitron tracking-widest">DIGITAL LAUNCHPAD</p>
-                <h2 className="text-7xl sm:text-8xl font-extrabold text-white mb-4 leading-tight font-orbitron">
-                    {DATA.PERSONAL.NAME}
-                </h2>
+            {/* Radial Gradient Overlay to fade grid edges */}
+            <div className="absolute inset-0 bg-background/80 [mask-image:radial-gradient(ellipse_at_center,transparent_0%,black)] pointer-events-none z-0" />
 
-                <TypingText text={tagline} />
+            {/* Spotlight Effect */}
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[500px] bg-primary/20 blur-[120px] rounded-full opacity-30 animate-spotlight pointer-events-none z-0" />
 
-                <p className="text-lg text-gray-400 max-w-xl mb-10">
-                    {DATA.PERSONAL.BIO}
-                </p>
-                <div className="flex space-x-4 mb-10">
-                    <a href="#projects" className="px-8 py-3 text-lg font-medium text-black bg-neon-aqua rounded-lg shadow-neon shadow-aqua-500/50 hover:bg-aqua-400 transition duration-300 transform hover:scale-105 font-orbitron">
-                        Explore Projects
-                    </a>
-                </div>
+            <div className="relative z-10 max-w-5xl mx-auto px-4 text-center">
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5 }}
+                    className="inline-flex items-center space-x-2 bg-zinc-900/50 border border-zinc-800 rounded-full px-4 py-1.5 mb-8 backdrop-blur-md"
+                >
+                    <span className="flex h-2 w-2 rounded-full bg-green-500 animate-pulse"></span>
+                    <span className="text-sm text-zinc-400 font-medium">Available for work</span>
+                </motion.div>
+
+                <motion.h1
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.1 }}
+                    className="text-6xl md:text-8xl font-bold tracking-tight text-white mb-6"
+                >
+                    Building digital <br />
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">
+                        experiences.
+                    </span>
+                </motion.h1>
+
+                <motion.p
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.2 }}
+                    className="text-xl text-zinc-400 max-w-2xl mx-auto mb-10 leading-relaxed"
+                >
+                    I'm Kaushubh. A full-stack engineer and interface designer.
+                    I build accessible, pixel-perfect, and performant web applications.
+                </motion.p>
+
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.3 }}
+                    className="flex flex-col sm:flex-row items-center justify-center gap-4"
+                >
+                    <button className="px-8 py-4 bg-white text-black rounded-lg font-semibold hover:bg-zinc-200 transition-colors flex items-center gap-2 group">
+                        View Projects
+                        <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    </button>
+                    <div className="flex gap-4">
+                        <a href="https://github.com" target="_blank" rel="noreferrer" className="p-4 bg-zinc-900 border border-zinc-800 rounded-lg text-zinc-400 hover:text-white hover:border-zinc-700 transition-all">
+                            <Github className="w-5 h-5" />
+                        </a>
+                        <a href="https://linkedin.com" target="_blank" rel="noreferrer" className="p-4 bg-zinc-900 border border-zinc-800 rounded-lg text-zinc-400 hover:text-white hover:border-zinc-700 transition-all">
+                            <Linkedin className="w-5 h-5" />
+                        </a>
+                        <a href="mailto:email@example.com" className="p-4 bg-zinc-900 border border-zinc-800 rounded-lg text-zinc-400 hover:text-white hover:border-zinc-700 transition-all">
+                            <Mail className="w-5 h-5" />
+                        </a>
+                    </div>
+                </motion.div>
             </div>
         </div>
     );
