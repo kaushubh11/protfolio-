@@ -18,7 +18,7 @@ const Contact = () => {
         };
 
         try {
-            const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000/api/contact';
+            const apiUrl = '/api/contact';
             const response = await fetch(apiUrl, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -77,7 +77,7 @@ const Contact = () => {
                             </div>
                             <div>
                                 <h3 className="font-semibold text-white mb-1">Email</h3>
-                                <a href="mailto:bkaushubh3@gmail.com" className="text-zinc-400 hover:text-primary transition-colors">bkaushubh3@gmail.com</a>
+                                <a href="mailto:kaushubh3@gmail.com" className="text-zinc-400 hover:text-primary transition-colors">kaushubh3@gmail.com</a>
                             </div>
                         </div>
 
