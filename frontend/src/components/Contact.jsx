@@ -5,17 +5,18 @@ import { Mail, Send, Loader2, MapPin, Phone, Github, Linkedin, CheckCircle2, Ale
 const Contact = () => {
     const [status, setStatus] = useState('idle');
     const [focusedField, setFocusedField] = useState(null);
+    const [formValues, setFormValues] = useState({ name: '', email: '', message: '' });
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormValues(prev => ({ ...prev, [name]: value }));
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setStatus('loading');
 
-        const formData = new FormData(e.target);
-        const data = {
-            name: formData.get('name'),
-            email: formData.get('email'),
-            message: formData.get('message')
-        };
+        const data = formValues;
 
         try {
             const apiUrl = '/api/contact';
@@ -27,11 +28,9 @@ const Contact = () => {
 
             if (response.ok) {
                 setStatus('success');
-                e.target.reset();
+                setFormValues({ name: '', email: '', message: '' });
                 setTimeout(() => setStatus('idle'), 3000);
             } else {
-                const text = await response.text();
-                console.error('Server Error:', response.status, text);
                 setStatus('error');
                 setTimeout(() => setStatus('idle'), 3000);
             }
@@ -117,13 +116,14 @@ const Contact = () => {
                                 type="text"
                                 name="name"
                                 id="name"
+                                value={formValues.name}
                                 required
                                 onFocus={() => setFocusedField('name')}
-                                onBlur={(e) => !e.target.value && setFocusedField(null)}
-                                onChange={(e) => e.target.value && setFocusedField('name')}
+                                onBlur={() => setFocusedField(null)}
+                                onChange={handleChange}
                                 className={inputClasses('name')}
                             />
-                            <label htmlFor="name" className={labelClasses('name', focusedField === 'name')}>
+                            <label htmlFor="name" className={labelClasses('name', formValues.name)}>
                                 Your Name
                             </label>
                         </div>
@@ -133,13 +133,14 @@ const Contact = () => {
                                 type="email"
                                 name="email"
                                 id="email"
+                                value={formValues.email}
                                 required
                                 onFocus={() => setFocusedField('email')}
-                                onBlur={(e) => !e.target.value && setFocusedField(null)}
-                                onChange={(e) => e.target.value && setFocusedField('email')}
+                                onBlur={() => setFocusedField(null)}
+                                onChange={handleChange}
                                 className={inputClasses('email')}
                             />
-                            <label htmlFor="email" className={labelClasses('email', focusedField === 'email')}>
+                            <label htmlFor="email" className={labelClasses('email', formValues.email)}>
                                 Email Address
                             </label>
                         </div>
@@ -149,13 +150,14 @@ const Contact = () => {
                                 name="message"
                                 id="message"
                                 rows="5"
+                                value={formValues.message}
                                 required
                                 onFocus={() => setFocusedField('message')}
-                                onBlur={(e) => !e.target.value && setFocusedField(null)}
-                                onChange={(e) => e.target.value && setFocusedField('message')}
+                                onBlur={() => setFocusedField(null)}
+                                onChange={handleChange}
                                 className={inputClasses('message')}
                             ></textarea>
-                            <label htmlFor="message" className={labelClasses('message', focusedField === 'message')}>
+                            <label htmlFor="message" className={labelClasses('message', formValues.message)}>
                                 Write your message...
                             </label>
                         </div>
@@ -189,7 +191,7 @@ const Contact = () => {
                                 )}
                                 {status === 'error' && (
                                     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="flex items-center gap-2">
-                                        Failed. Check Console <AlertCircle size={20} />
+                                        Error. Try Again <AlertCircle size={20} />
                                     </motion.div>
                                 )}
                             </AnimatePresence>
