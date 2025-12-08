@@ -30,11 +30,13 @@ const Contact = () => {
                 e.target.reset();
                 setTimeout(() => setStatus('idle'), 3000);
             } else {
+                const text = await response.text();
+                console.error('Server Error:', response.status, text);
                 setStatus('error');
                 setTimeout(() => setStatus('idle'), 3000);
             }
         } catch (error) {
-            console.error('Error:', error);
+            console.error('Submission Error:', error);
             setStatus('error');
             setTimeout(() => setStatus('idle'), 3000);
         }
@@ -187,7 +189,7 @@ const Contact = () => {
                                 )}
                                 {status === 'error' && (
                                     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="flex items-center gap-2">
-                                        Error. Try Again <AlertCircle size={20} />
+                                        Failed. Check Console <AlertCircle size={20} />
                                     </motion.div>
                                 )}
                             </AnimatePresence>
