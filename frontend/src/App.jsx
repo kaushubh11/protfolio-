@@ -7,18 +7,10 @@ import Education from './components/Education';
 import About from './components/About';
 import NavDock from './components/NavDock';
 import ThreeDBg from './components/ThreeDBg';
+import Footer from './components/Footer';
 
 function App() {
-  const [scrollY, setScrollY] = useState(0);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrollY(window.scrollY);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   return (
     <main className="bg-background min-h-screen text-white selection:bg-purple-500/30 relative">
@@ -32,7 +24,7 @@ function App() {
       </div>
 
       <div className="relative z-10">
-        <NavDock scrollY={scrollY} />
+        <NavDock />
         <Hero />
         <About />
         <Skills />
@@ -40,10 +32,7 @@ function App() {
         <Projects />
         <Contact />
 
-        {/* Simple Footer */}
-        <footer className="py-8 text-center text-zinc-600 text-sm border-t border-zinc-900">
-          <p>© {new Date().getFullYear()} Kaushubh Chaudhary. Built with React & Tailwind.</p>
-        </footer>
+        <Footer />
       </div>
     </main>
   );

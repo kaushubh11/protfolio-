@@ -22,17 +22,17 @@ const ThreeDBg = React.memo(({ animationState }) => {
         camera.position.z = 20;
 
         const renderer = new THREE.WebGLRenderer({
-            antialias: true,
+            antialias: false,
             alpha: true,
             powerPreference: "high-performance"
         });
         renderer.setSize(mount.clientWidth, mount.clientHeight);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // Clamp pixel ratio for performance
+        renderer.setPixelRatio(1); // Force 1x pixel ratio for maximum performance
         mount.appendChild(renderer.domElement);
         rendererRef.current = renderer;
 
         // --- PARTICLE SYSTEM ---
-        const particleCount = 400; // Optimized count
+        const particleCount = 200; // Further optimized count
         const geometry = new THREE.BufferGeometry();
         const positions = new Float32Array(particleCount * 3);
         const colors = new Float32Array(particleCount * 3);

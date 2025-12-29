@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Home, User, Code, Mail, Cpu, GraduationCap } from 'lucide-react';
 
-const NavDock = ({ scrollY }) => {
+const NavDock = () => {
     const sections = [
         { name: 'Home', id: 'hero', icon: Home },
         { name: 'About', id: 'about', icon: User },
@@ -13,6 +13,7 @@ const NavDock = ({ scrollY }) => {
 
     const [activeId, setActiveId] = useState('hero');
     const [isHovering, setIsHovering] = useState(false);
+    const [isScrolled, setIsScrolled] = useState(false);
 
     const scrollToSection = (id) => {
         const element = document.getElementById(id);
@@ -25,6 +26,18 @@ const NavDock = ({ scrollY }) => {
             });
         }
     };
+
+    useEffect(() => {
+        const handleScroll = () => {
+            const scrolled = window.scrollY > 100;
+            if (scrolled !== isScrolled) {
+                setIsScrolled(scrolled);
+            }
+        };
+
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, [isScrolled]);
 
     useEffect(() => {
         const observer = new IntersectionObserver(
@@ -49,32 +62,26 @@ const NavDock = ({ scrollY }) => {
         return () => observer.disconnect();
     }, [sections]);
 
-    // Determine state: true if scrolled past the hero section threshold
-    const isTopBar = scrollY > 100;
+    const dockWidthClass = isHovering || isScrolled ? 'w-auto' : 'w-auto md:w-16';
 
-    const dockWidthClass = isHovering || isTopBar ? 'w-auto' : 'w-16';
-    const orientationClass = isTopBar ? 'flex-row rounded-full px-6 py-3 top-6 scale-90' : 'flex-col space-y-3 p-2 rounded-full h-auto top-1/2 -translate-y-1/2 left-6';
-
-    // Apply specific positioning and style based on state
-    const positionClass = isTopBar
-        ? 'inset-x-0 mx-auto w-fit' // Centered top bar
-        : ''; // Vertical dock
+    const orientationClass = isScrolled
+        ? 'flex-row rounded-full px-6 py-3 top-6 scale-90 inset-x-0 mx-auto w-fit'
+        : 'flex-row space-x-3 p-2 rounded-full bottom-6 left-1/2 -translate-x-1/2 md:flex-col md:space-y-3 md:space-x-0 md:bottom-auto md:top-1/2 md:-translate-y-1/2 md:left-6 md:translate-x-0';
 
     return (
         <div
-            className={`fixed z-50 transition-all duration-500 ease-out 
-                        ${positionClass} 
+            className={`fixed z-50 transition-all duration-300 ease-out 
                         ${orientationClass} 
-                        bg-zinc-900/40 border border-zinc-800/50 backdrop-blur-xl shadow-lg shadow-black/20
+                        bg-zinc-900/40 border border-zinc-800/50 backdrop-blur-md shadow-lg shadow-black/20
                         ${dockWidthClass} flex`}
             onMouseEnter={() => setIsHovering(true)}
             onMouseLeave={() => setIsHovering(false)}
         >
-            <div className={`flex ${isTopBar ? 'space-x-2' : 'flex-col space-y-3'}`}>
+            <div className={`flex ${isScrolled ? 'space-x-2' : 'space-x-2 md:flex-col md:space-x-0 md:space-y-3'}`}>
                 {sections.map((item) => {
                     const isActive = activeId === item.id;
                     const IconComponent = item.icon;
-                    const shouldShowLabel = isHovering && !isTopBar; // Show label only on hover in vertical mode
+                    const shouldShowLabel = isHovering && !isScrolled; // Show label only on hover in vertical mode
 
                     return (
                         <div key={item.id} className="relative group">
@@ -96,7 +103,7 @@ const NavDock = ({ scrollY }) => {
                                 )}
 
                                 {/* Label for Horizontal Mode (Tooltip) */}
-                                {isTopBar && (
+                                {isScrolled && (
                                     <span className="absolute top-full mt-2 px-2 py-1 bg-zinc-900 border border-zinc-800 text-zinc-100 text-xs rounded-md whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
                                         {item.name}
                                     </span>

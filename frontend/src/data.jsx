@@ -19,7 +19,7 @@ export const DATA = {
         BIO: "A highly motivated Second-Year BSc Computing student actively transforming academic concepts into practical digital skills. I am passionate about full-stack development, with core proficiency in Java, React, and Python, and a constant drive for learning new technologies in the ever-evolving tech landscape. Ready to contribute, build, and innovate.",
         EMAIL: "placeholder@example.com",
         LINKEDIN: "#",
-        GITHUB: "#",
+        GITHUB: "https://github.com/kaushubh11",
     },
     SKILLS: [
         { name: 'HTML', level: 2 },
